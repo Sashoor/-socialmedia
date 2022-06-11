@@ -2,8 +2,11 @@ import Image from "next/image";
 import Header from "../components/Header";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
+import Login from "../components/Login";
 
-export default function Home() {
+export default function Home({ session }) {
+  if (!session) return <Login />;
+
   return (
     <div className="">
       <Head>
@@ -21,11 +24,9 @@ export default function Home() {
 }
 
 export async function getServerSideProps(ctx) {
-  const session = await getSession(ctx);
-
   return {
     props: {
-      session,
+      session: await getSession(ctx),
     },
   };
 }
